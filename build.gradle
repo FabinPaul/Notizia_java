@@ -37,6 +37,10 @@ allprojects {
         testRunner = "1.0.2"
         espresso = "3.0.2"
         dagger2 = "2.21"
+        gsonConverter = "2.5.0"
+        picasso = "2.71828"
+        rxJava2Adapter = gsonConverter
+        mockito = "2.25.0"
     }
 }
 
