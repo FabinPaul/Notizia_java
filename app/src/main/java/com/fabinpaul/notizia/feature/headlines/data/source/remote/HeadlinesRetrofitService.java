@@ -1,6 +1,6 @@
-package com.fabinpaul.notizia.headlines.data.source.remote;
+package com.fabinpaul.notizia.feature.headlines.data.source.remote;
 
-import com.fabinpaul.notizia.headlines.data.TopHeadlinesRes;
+import com.fabinpaul.notizia.feature.headlines.data.TopHeadlinesRes;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;

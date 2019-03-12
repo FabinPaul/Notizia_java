@@ -1,4 +1,4 @@
-package com.fabinpaul.notizia.headlines.data;
+package com.fabinpaul.notizia.feature.headlines.data;
 
 import com.google.gson.annotations.SerializedName;
 

@@ -3,7 +3,7 @@ package com.fabinpaul.notizia.di;
 import android.app.Application;
 
 import com.fabinpaul.notizia.NotiziaApplication;
-import com.fabinpaul.notizia.headlines.data.source.HeadlinesRepositoryModule;
+import com.fabinpaul.notizia.feature.headlines.data.source.HeadlinesRepositoryModule;
 
 import dagger.BindsInstance;
 import dagger.Component;
