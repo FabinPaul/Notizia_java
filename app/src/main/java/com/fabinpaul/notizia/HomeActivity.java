@@ -1,21 +1,30 @@
 package com.fabinpaul.notizia;
 
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 
-public class HomeActivity extends AppCompatActivity {
+import com.fabinpaul.notizia.feature.headlines.HeadlinesFragment;
+import com.fabinpaul.notizia.utils.ActivityUtils;
 
-    private Fragment mHomeFragment;
+import javax.inject.Inject;
+
+import dagger.Lazy;
+import dagger.android.support.DaggerAppCompatActivity;
+
+public class HomeActivity extends DaggerAppCompatActivity {
+
+    @Inject
+    Lazy<HeadlinesFragment> mHeadlineFragmentProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mHomeFragment = getSupportFragmentManager().findFragmentById(R.id.contentMain);
-        if (mHomeFragment == null) {
-
+        Fragment homeFragment = getSupportFragmentManager().findFragmentById(R.id.contentMain);
+        if (homeFragment == null) {
+            homeFragment = mHeadlineFragmentProvider.get();
+            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), homeFragment, R.id.contentMain);
         }
     }
 }
