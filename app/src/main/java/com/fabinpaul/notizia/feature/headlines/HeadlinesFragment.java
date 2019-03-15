@@ -11,12 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.fabinpaul.notizia.HomeActivity;
 import com.fabinpaul.notizia.R;
 import com.fabinpaul.notizia.di.ActivityScoped;
 import com.fabinpaul.notizia.feature.headlines.components.ArticlesAdapter;
 import com.fabinpaul.notizia.feature.headlines.data.ArticlesItem;
-import com.fabinpaul.notizia.utils.FragmentCommunicator;
+import com.fabinpaul.notizia.feature.newsdetails.NewsDetailsActivity;
 
 import java.util.List;
 
@@ -34,7 +33,6 @@ public class HeadlinesFragment extends DaggerFragment implements HeadlinesContra
 
     private RecyclerView mHeadlineList;
     private SwipeRefreshLayout mRefreshHeadlines;
-    private FragmentCommunicator mCommunicator;
 
     @Inject
     public HeadlinesFragment() {
@@ -43,7 +41,6 @@ public class HeadlinesFragment extends DaggerFragment implements HeadlinesContra
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mCommunicator = (FragmentCommunicator) getActivity();
     }
 
     @Nullable
@@ -56,13 +53,9 @@ public class HeadlinesFragment extends DaggerFragment implements HeadlinesContra
 
         mRefreshHeadlines.setOnRefreshListener(this);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        return view;
-    }
 
-    @Override
-    public void onStart() {
-        super.onStart();
         mPresenter.start(this);
+        return view;
     }
 
     @Override
@@ -89,9 +82,7 @@ public class HeadlinesFragment extends DaggerFragment implements HeadlinesContra
 
     @Override
     public void showNewsDetails(String newsURL) {
-        Bundle bundle = new Bundle();
-        bundle.putString(HomeActivity.EXTRA_NEWS_URL, newsURL);
-        mCommunicator.onHandleMessage(R.id.headlinesList, bundle);
+        NewsDetailsActivity.startActivity(getActivity(), newsURL);
     }
 
     @Override

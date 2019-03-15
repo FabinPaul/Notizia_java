@@ -1,7 +1,5 @@
 package com.fabinpaul.notizia.feature.headlines;
 
-import android.util.Log;
-
 import com.fabinpaul.notizia.di.ActivityScoped;
 import com.fabinpaul.notizia.feature.headlines.data.ArticlesItem;
 import com.fabinpaul.notizia.feature.headlines.data.source.HeadlinesDataSource;

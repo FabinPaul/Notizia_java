@@ -3,7 +3,9 @@ package com.fabinpaul.notizia.di;
 import android.app.Application;
 
 import com.fabinpaul.notizia.NotiziaApplication;
+import com.fabinpaul.notizia.feature.headlines.HeadlinesModule;
 import com.fabinpaul.notizia.feature.headlines.data.source.HeadlinesRepositoryModule;
+import com.fabinpaul.notizia.feature.newsdetails.NewsDetailsModule;
 
 import javax.inject.Singleton;
 
