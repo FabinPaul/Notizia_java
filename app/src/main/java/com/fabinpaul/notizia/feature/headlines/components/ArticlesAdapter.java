@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fabinpaul.notizia.R;
+import com.fabinpaul.notizia.feature.headlines.HeadlinesContract;
 import com.fabinpaul.notizia.feature.headlines.data.ArticlesItem;
 import com.squareup.picasso.Picasso;
 
@@ -17,9 +18,11 @@ import java.util.List;
 public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ViewHolder> {
 
     private List<ArticlesItem> mArticles;
+    private HeadlinesContract.Presenter mPresenter;
 
-    public ArticlesAdapter(List<ArticlesItem> articles) {
+    public ArticlesAdapter(List<ArticlesItem> articles, HeadlinesContract.Presenter presenter) {
         this.mArticles = articles;
+        this.mPresenter = presenter;
     }
 
     @NonNull
@@ -40,7 +43,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ViewHo
         return mArticles.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private ImageView mHeadlineImage;
         private TextView mHeadlineTitle;
@@ -54,12 +57,18 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ViewHo
             mHeadlineTitle = itemView.findViewById(R.id.headlineTitle);
             mNewsSource = itemView.findViewById(R.id.headlineSource);
             mTimeSince = itemView.findViewById(R.id.headlineTimeSince);
+            itemView.setOnClickListener(this);
         }
 
         void bind(ArticlesItem article) {
             mHeadlineTitle.setText(article.getTitle());
             mNewsSource.setText(article.getNewsSource() == null ? "" : article.getNewsSource().getName());
             Picasso.get().load(article.getUrlToImage()).into(mHeadlineImage);
+        }
+
+        @Override
+        public void onClick(View v) {
+            mPresenter.onNewsArticleClick(mArticles.get(getAdapterPosition()));
         }
     }
 }

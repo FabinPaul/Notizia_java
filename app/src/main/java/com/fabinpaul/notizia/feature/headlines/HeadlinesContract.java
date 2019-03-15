@@ -15,6 +15,8 @@ public interface HeadlinesContract {
         void showLoadingDialog(boolean visible);
 
         void showErrorDialog(String title, String message);
+
+        void showNewsDetails(String newsURL);
     }
 
     interface Presenter extends BasePresenter<View> {

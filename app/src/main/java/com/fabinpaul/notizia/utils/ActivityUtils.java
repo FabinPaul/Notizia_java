@@ -17,6 +17,7 @@
 package com.fabinpaul.notizia.utils;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -24,9 +25,21 @@ import android.support.v4.app.FragmentTransaction;
 public class ActivityUtils {
 
     public static void addFragmentToActivity(@NonNull FragmentManager fragmentManager,
-                                             @NonNull Fragment fragment, int frameId) {
+                                             @NonNull Fragment fragment,
+                                             int frameId,
+                                             @Nullable String tag) {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(frameId, fragment);
+        if (tag != null) {
+            transaction.addToBackStack(tag);
+        }
+        transaction.commit();
+    }
+
+    public static void replaceFragmentToActivity(@NonNull FragmentManager fragmentManager,
+                                                 @NonNull Fragment fragment, int frameId) {
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(frameId, fragment);
         transaction.commit();
     }
 

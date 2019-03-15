@@ -53,7 +53,7 @@ public class HeadlinesPresenter implements HeadlinesContract.Presenter {
 
     @Override
     public void onNewsArticleClick(ArticlesItem articlesItem) {
-
+        mView.showNewsDetails(articlesItem.getUrl());
     }
 
     @Override
