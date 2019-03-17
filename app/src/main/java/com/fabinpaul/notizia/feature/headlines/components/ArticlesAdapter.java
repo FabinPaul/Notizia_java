@@ -1,7 +1,9 @@
 package com.fabinpaul.notizia.feature.headlines.components;
 
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +13,16 @@ import android.widget.TextView;
 import com.fabinpaul.notizia.R;
 import com.fabinpaul.notizia.feature.headlines.HeadlinesContract;
 import com.fabinpaul.notizia.feature.headlines.data.ArticlesItem;
+import com.fabinpaul.notizia.utils.Utils;
 import com.squareup.picasso.Picasso;
 
+import java.text.ParseException;
 import java.util.List;
 
-public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ViewHolder> {
+public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ArticlesViewHolder> {
+
+    private static final String TAG = "ArticlesAdapter";
+    private static final String PUBLISHED_AT_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
 
     private List<ArticlesItem> mArticles;
     private HeadlinesContract.Presenter mPresenter;
@@ -27,15 +34,15 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ViewHo
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public ArticlesViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.list_item_article, viewGroup, false);
-        return new ViewHolder(view);
+        return new ArticlesViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        viewHolder.bind(mArticles.get(i));
+    public void onBindViewHolder(@NonNull ArticlesViewHolder articlesViewHolder, int i) {
+        articlesViewHolder.bind(mArticles.get(i));
     }
 
     @Override
@@ -43,14 +50,14 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ViewHo
         return mArticles.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class ArticlesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private ImageView mHeadlineImage;
         private TextView mHeadlineTitle;
         private TextView mNewsSource;
         private TextView mTimeSince;
 
-        ViewHolder(@NonNull View itemView) {
+        ArticlesViewHolder(@NonNull View itemView) {
             super(itemView);
 
             mHeadlineImage = itemView.findViewById(R.id.headlineImg);
@@ -64,6 +71,12 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ViewHo
             mHeadlineTitle.setText(article.getTitle());
             mNewsSource.setText(article.getNewsSource() == null ? "" : article.getNewsSource().getName());
             Picasso.get().load(article.getUrlToImage()).into(mHeadlineImage);
+            try {
+                String hrSince = Utils.getTimeInHrSince(article.getPublishedAt(), PUBLISHED_AT_DATE_FORMAT);
+                mTimeSince.setText(itemView.getContext().getString(R.string.published_since, hrSince));
+            } catch (ParseException e) {
+                Log.e(TAG, "Unable to parse published time", e);
+            }
         }
 
         @Override

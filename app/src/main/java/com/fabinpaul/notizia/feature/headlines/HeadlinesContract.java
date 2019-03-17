@@ -23,6 +23,6 @@ public interface HeadlinesContract {
 
         void onNewsArticleClick(ArticlesItem articlesItem);
 
-        void updateNewsHeadlines();
+        void updateNewsHeadlines(boolean refresh);
     }
 }

@@ -8,7 +8,7 @@ android {
         targetSdkVersion project.ext.targetSdkVersion
         versionCode project.ext.versionCode
         versionName project.ext.versionName
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "NEWS_API_KEY", NEWS_API_KEY
         buildConfigField "String", "NEWS_BASE_URL", "\"https://newsapi.org/v2/\""
     }
@@ -27,24 +27,39 @@ android {
             }
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+
     //Android support dependencies
-    implementation "com.android.support:appcompat-v7:$androidSupportVersion"
-    implementation "com.android.support:recyclerview-v7:$androidSupportVersion"
-    implementation "com.android.support:design:$androidSupportVersion"
-    implementation "com.android.support:cardview-v7:$androidSupportVersion"
-    implementation "com.android.support.constraint:constraint-layout:$constraintLayout"
+    implementation "androidx.appcompat:appcompat:$androidSupportVersionX"
+    implementation "androidx.recyclerview:recyclerview:$androidDesignVersionX"
+    implementation "com.google.android.material:material:$androidDesignVersionX"
+    implementation "androidx.cardview:cardview:$androidDesignVersionX"
+    implementation "androidx.constraintlayout:constraintlayout:$constraintLayout"
+
     //Retrofit dependencies
     implementation "com.squareup.retrofit2:retrofit:$retrofit2"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$rxJava2Adapter"
     implementation "com.squareup.retrofit2:converter-gson:$gsonConverter"
+
     //RxJava dependencies
     implementation "io.reactivex.rxjava2:rxandroid:$rxAndroid"
     implementation "io.reactivex.rxjava2:rxjava:$rxJava2"
     testImplementation "junit:junit:$junit"
+
+    //Room dependencies
+    implementation "androidx.room:room-runtime:$roomVersion"
+    annotationProcessor "androidx.room:room-compiler:$roomVersion", {
+        exclude group: 'org.jetbrains.kotlinx', module: 'kotlinx-metadata-jvm'
+    }
+    implementation "androidx.room:room-rxjava2:$roomVersion"
+
     //Dagger dependencies
     implementation "com.google.dagger:dagger:$dagger2"
     implementation "com.google.dagger:dagger-android:$dagger2"
@@ -55,6 +70,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'exifinterface'
     })
     testImplementation "org.mockito:mockito-core:$mockito"
-    androidTestImplementation "com.android.support.test:runner:$testRunner"
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:$espresso"
+    androidTestImplementation "androidx.test:runner:$testRunner"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
+    testImplementation "androidx.room:room-testing:$roomVersion"
 }

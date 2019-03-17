@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Notizia</string>
+
+    <string name="published_since">%s hours ago</string>
 </resources>

@@ -1,17 +1,17 @@
 package com.fabinpaul.notizia.feature.headlines.data.source;
 
-import android.support.annotation.NonNull;
-
 import com.fabinpaul.notizia.feature.headlines.data.ArticlesItem;
-import com.fabinpaul.notizia.utils.Callback;
 
 import java.util.List;
 
-import io.reactivex.disposables.Disposable;
+import androidx.annotation.NonNull;
+import io.reactivex.Flowable;
 
 public interface HeadlinesDataSource {
 
-    Disposable getHeadlines(@NonNull Callback<List<ArticlesItem>> responseCallback);
+    Flowable<List<ArticlesItem>> getHeadlines(@NonNull String country, boolean refresh);
 
-    void nullifyHeadlineCallback();
+    void saveHeadlines(@NonNull ArticlesItem article);
+
+    void removeAllHeadlines();
 }

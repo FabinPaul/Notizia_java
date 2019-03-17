@@ -2,29 +2,53 @@ package com.fabinpaul.notizia.feature.headlines.data;
 
 import com.google.gson.annotations.SerializedName;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Embedded;
+import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.Ignore;
+import androidx.room.Index;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "article", indices = {@Index(value = {"news_source", "title", "id"})}, foreignKeys = @ForeignKey(entity = NewsSource.class,
+        parentColumns = "source_id", childColumns = "news_source", onDelete = ForeignKey.CASCADE))
 public class ArticlesItem {
 
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+
+    @ColumnInfo(name = "published_at")
     @SerializedName("publishedAt")
     private String publishedAt;
 
+    @ColumnInfo(name = "author")
     @SerializedName("author")
     private String author;
 
+    @ColumnInfo(name = "url_to_image")
     @SerializedName("urlToImage")
     private String urlToImage;
 
+    @ColumnInfo(name = "description")
     @SerializedName("description")
     private String description;
 
-    @SerializedName("newsSource")
+    @Embedded
+    @SerializedName("source")
     private NewsSource newsSource;
 
+    @ColumnInfo(name = "news_source")
+    private long newsSourceID;
+
+    @ColumnInfo(name = "title")
     @SerializedName("title")
     private String title;
 
+    @ColumnInfo(name = "url")
     @SerializedName("url")
     private String url;
 
+    @ColumnInfo(name = "content")
     @SerializedName("content")
     private String content;
 
@@ -90,6 +114,22 @@ public class ArticlesItem {
 
     public String getContent() {
         return content;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public long getNewsSourceID() {
+        return newsSourceID;
+    }
+
+    public void setNewsSourceID(long newsSourceID) {
+        this.newsSourceID = newsSourceID;
     }
 
     @Override

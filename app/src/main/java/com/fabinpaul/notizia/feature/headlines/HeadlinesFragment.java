@@ -1,12 +1,12 @@
 package com.fabinpaul.notizia.feature.headlines;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,11 +38,6 @@ public class HeadlinesFragment extends DaggerFragment implements HeadlinesContra
     public HeadlinesFragment() {
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -54,8 +49,19 @@ public class HeadlinesFragment extends DaggerFragment implements HeadlinesContra
         mRefreshHeadlines.setOnRefreshListener(this);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
-        mPresenter.start(this);
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mPresenter.start(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mPresenter.stop();
     }
 
     @Override
@@ -87,6 +93,6 @@ public class HeadlinesFragment extends DaggerFragment implements HeadlinesContra
 
     @Override
     public void onRefresh() {
-        mPresenter.updateNewsHeadlines();
+        mPresenter.updateNewsHeadlines(true);
     }
 }

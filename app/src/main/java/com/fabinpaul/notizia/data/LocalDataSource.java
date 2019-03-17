@@ -9,5 +9,5 @@ import javax.inject.Qualifier;
 @Qualifier
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-public @interface RemoteDataSource {
+public @interface LocalDataSource {
 }

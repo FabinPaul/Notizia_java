@@ -15,66 +15,41 @@ import org.mockito.MockitoAnnotations;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.observers.TestObserver;
+
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
 public class HeadlinesRepositoryTest {
 
-    private static final String HEADLINE_CACHE_KEY = "headines_cache";
+    private static final String COUNTRY = "us";
 
     private HeadlinesRepository mHeadlinesRepository;
     @Mock
     private HeadlinesDataSource mHeadlinesRemoteDS;
     @Mock
-    private Callback<List<ArticlesItem>> mHeadlinesResCallback;
-    @Captor
-    private ArgumentCaptor<Callback<List<ArticlesItem>>> mRemoteHeadlineCallbackCaptor;
+    private HeadlinesDataSource mHeadlinesLocalDS;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        mHeadlinesRepository = new HeadlinesRepository(mHeadlinesRemoteDS);
+        mHeadlinesRepository = new HeadlinesRepository(mHeadlinesRemoteDS, mHeadlinesLocalDS);
     }
 
     @Test
     public void getHeadlinesSuccess() {
-        mHeadlinesRepository.getHeadlines(mHeadlinesResCallback);
+        TestObserver<List<ArticlesItem>> testObserver = new TestObserver<>();
+//        when(mHeadlinesRemoteDS.getHeadlines(anyString(), anyBoolean())).then(testObserver);
 
-        verify(mHeadlinesRemoteDS).getHeadlines(mRemoteHeadlineCallbackCaptor.capture());
+        mHeadlinesRepository.getHeadlines(COUNTRY, true);
 
-        List<ArticlesItem> articles = TestUtils.createListOfMockResponses(ArticlesItem.class, 3);
-
-        mRemoteHeadlineCallbackCaptor.getValue().onSuccess(articles);
-
-        assertFalse(mHeadlinesRepository.getCache().get(HEADLINE_CACHE_KEY).isEmpty());
-
-        mHeadlinesRepository.getHeadlines(mHeadlinesResCallback);
-
-        verify(mHeadlinesResCallback, times(2)).onSuccess(articles);
-
-        verifyNoMoreInteractions(mHeadlinesRemoteDS);
-    }
-
-    @Test
-    public void getHeadlinesFailure() {
-        mHeadlinesRepository.getHeadlines(mHeadlinesResCallback);
-
-        verify(mHeadlinesRemoteDS).getHeadlines(mRemoteHeadlineCallbackCaptor.capture());
-
-        mRemoteHeadlineCallbackCaptor.getValue().onError(Constants.ErrorCodes.RETROFIT, null);
-
-        verify(mHeadlinesResCallback).onError(Constants.ErrorCodes.RETROFIT, null);
-    }
-
-    @Test
-    public void nullifyHeadlineCallback() {
-        mHeadlinesRepository.nullifyHeadlineCallback();
-
-        verify(mHeadlinesRemoteDS).nullifyHeadlineCallback();
+        verify(mHeadlinesRemoteDS).getHeadlines(COUNTRY, true);
     }
 }
